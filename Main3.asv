@@ -1,0 +1,68 @@
+clc;
+clear;
+close all;
+No_of_folds=5;
+No_Neighbor=5;
+No_of_trees=5;
+
+data_loc = 'C:\Users\ajavanmardi\Desktop\ArashAI_Project_new\Arash_data.xlsx';
+[~,sheets] = xlsfinfo(data_loc);
+for i = 1:length(sheets)
+    data{i} = xlsread(data_loc,sheets{i});
+end
+
+for i = 1:length(data)
+    ndata = data{i};
+    [m,n] = size(ndata) ;
+    P = 0.80 ;
+    idx = randperm(m);
+    Training(i) = {ndata(idx(1:round(P*m)),:)} ;
+    External_Testing(i) = {ndata(idx(round(P*m)+1:end),:)} ;
+end
+
+
+% X=Training(:,3:end-1);
+% Y=Training(:,end);
+
+n=13;
+nn=10;
+
+
+%%%%Only Prediction algorithms in each trajectory
+for i = 2:5 %length(Training)
+    cur_data = Training{1,i};
+    X=cur_data(:,3:end-1);
+    Y=cur_data(:,end);
+    num_feats = round(numel(X(:,1))*0.15);
+    for k = 9:15
+        %try
+            [final_x] = feature_extraction(X,No_Neighbor,num_feats,k);
+            for j = 1
+                [i k]
+                [TestResult,TrainResult]= regression_algos(final_x,Y,No_of_folds,j,nn);
+                TOTAL_Test_MAE(j,:) = TestResult.MAE;
+                TOTAL_Test_MSE(j,:) = TestResult.MSE;
+                TOTAL_Test_RMSE(j,:) = TestResult.RMSE;
+             
+                TOTAL_Train_MAE(j,:) = TrainResult.MAE;
+                TOTAL_Train_MSE(j,:) = TrainResult.MSE;
+                TOTAL_Train_RMSE(j,:) = TrainResult.RMSE;
+            end
+            TOTAL_TestResult.('MAE') = TOTAL_Test_MAE;
+            TOTAL_TestResult.('MSE') = TOTAL_Test_MSE;
+            TOTAL_TestResult.('RMSE') = TOTAL_Test_RMSE;
+            TOTAL_TrainResult.('MAE') = TOTAL_Train_MAE;
+            TOTAL_TrainResult.('MSE') = TOTAL_Train_MSE;
+            TOTAL_TrainResult.('RMSE') = TOTAL_Train_RMSE;
+            
+            dirname = [strcat('Result_with_Feat_Extr_',string(k))];
+            mkdir(dirname);
+            ffname1 = strcat(dirname,'/TOTAL_TrainResult_Dataset', string(i), '.mat');
+            ffname2 = strcat(dirname,'/TOTAL_TestResult_Dataset', string(i),'.mat');
+            save(ffname1,'TOTAL_TrainResult');
+            save(ffname2,'TOTAL_TestResult');
+       % catch
+       % end
+    end
+end
+
