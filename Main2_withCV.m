@@ -20,7 +20,11 @@ end
 
 for i = 1:length(data)
     ndata = data{i};
-    [test_data,train_data] = KFoldCrossValidation(ndata,No_of_folds);
+    Max_output = max(ndata(:,end));
+    for ar = 1:size(ndata,2)
+        norm_data = ndata./max(ndata);
+    end
+    [test_data,train_data] = KFoldCrossValidation(norm_data,No_of_folds);
     for k =1 : No_of_folds
         Train_Validedata=train_data(k);
         Train_Validedatase=cell2mat(Train_Validedata);
@@ -36,7 +40,7 @@ for i = 1:length(data)
             for j = 1:n
                 % try
                 [i k l j]
-                [TestResult,TrainResult,ExtTestResult]= regression_algos(final_x,Y,final_X_ext,Y_ext,No_of_folds,j,nn);
+                [TestResult,TrainResult,ExtTestResult]= regression_algos(final_x,Y,final_X_ext,Y_ext,No_of_folds,j,nn,Max_output);
                 TOTAL_Test_MAE(k,j,:) = TestResult.MAE;
                 TOTAL_Test_MSE(k,j,:) = TestResult.MSE;
                 TOTAL_Test_RMSE(k,j,:) = TestResult.RMSE;
@@ -64,7 +68,7 @@ for i = 1:length(data)
             TOTAL_Ext_TestResult.('MSE') = TOTAL_Ext_Test_MSE;
             TOTAL_Ext_TestResult.('RMSE') = TOTAL_Ext_Test_RMSE;
         end
-        dirname = [strcat('Oct10_Result_with_Feat_Sel_',string(l))];
+        dirname = [strcat('Oct12_Result_with_Feat_Sel_',string(l))];
         mkdir(dirname);
         ffname1 = strcat(dirname,'/TOTAL_TrainResult_Dataset', string(i), '.mat');
         ffname2 = strcat(dirname,'/TOTAL_TestResult_Dataset', string(i),'.mat');

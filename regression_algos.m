@@ -2,7 +2,6 @@ function [TestResult,TrainResult,ExtTestResult]= regression_algos(X,Y,X_ext,Y_ex
 addpath('C:\Users\Arash\Downloads\ArashAI_Project_oct8\Regression_functions')
 
 switch i
-    
     case 1
         [TestResult,TrainResult,ExtTestResult]=LinearRegression_Fun(X,Y,X_ext,Y_ext,No_of_folds,Max_output);
     case 2

@@ -1,4 +1,4 @@
-function [TestResult,TrainResult,ExtTestResult]=RBF_Fun(X,Y,X_ext,Y_ext,No_of_folds)
+function [TestResult,TrainResult,ExtTestResult]=RBF_Fun(X,Y,X_ext,Y_ext,No_of_folds,Max_output)
 No_of_class=max(Y);
 InputNum=size(X,2);
 
@@ -37,25 +37,30 @@ for K =1 : No_of_folds
     
     yhtrn1 = sim(net3,Xtrn);
     yhtrn = vec2ind(yhtrn1);
-    
-    % test step
     Yh = sim(net3,Xtst);
     Yh1 = vec2ind(Yh);
-    
     Yh_ext = sim(net3,X_ext');
     Yh1_ext = vec2ind(Yh_ext);
     
-    %%%%%%%%TEST Measurments  MSE, SMSE, MAE, r-squared, adjusted r-squared
-    mse_train = mse(Ytrn,yhtrn);
-    rmse_train = sqrt(mse(Ytrn,yhtrn));
-    mae_train = mae(Ytrn,yhtrn);
-    mse_test = mse(Ytst,Yh1);
-    rmse_test = sqrt(mse(Ytst,Yh1));
-    mae_test = mae(Ytst,Yh1);
+    Ytrn_real = Ytrn*Max_output;
+    yhtrn_real = yhtrn*Max_output;
+    Ytst_real = Ytst*Max_output;
+    Yh1_real = Yh1*Max_output;
+    Yext_real = Y_ext*Max_output;
+    Yh1_ext_real = Yh1_ext*Max_output;
     
-    mse_ext_test = mse(Y_ext,Yh1_ext);
-    rmse_ext_test = sqrt(mse(Y_ext,Yh1_ext));
-    mae_ext_test = mae(Y_ext,Yh1_ext);
+    %%%%%%%%TEST Measurments  MSE, SMSE, MAE, r-squared, adjusted r-squared
+    mse_train = mse(Ytrn_real,yhtrn_real);
+    rmse_train = sqrt(Ytrn_real,yhtrn_real);
+    mae_train = mae(Ytrn_real,yhtrn_real);
+    
+    mse_test = mse(Ytst_real,Yh1_real);
+    rmse_test = sqrt(mse(Ytst_real,Yh1_real));
+    mae_test = mae(Ytst_real,Yh1_real);
+    
+    mse_ext_test = mse(Yext_real,Yh1_ext_real);
+    rmse_ext_test = sqrt(mse(Yext_real,Yh1_ext_real));
+    mae_ext_test = mae(Yext_real,Yh1_ext_real);
     %%%%%%%%TRAIN Measurments
     MSEtrain(K,1) = mse_train;
     RMSEtrain(K,1) = rmse_train;
@@ -64,8 +69,6 @@ for K =1 : No_of_folds
     MSEtest(K,1) = mse_test;
     RMSEtest(K,1) = rmse_test;
     MAEtest(K,1) = mae_test;
-    
-    
     %%%%%%%%External TEST Measurments
     MSEexttest(K,1) = mse_ext_test;
     RMSEexttest(K,1) = rmse_ext_test;
@@ -84,4 +87,3 @@ ExtTestResult.MSE= MSEexttest;
 ExtTestResult.RMSE= RMSEexttest;
 ExtTestResult.MAE= MAEexttest;
 end %function
-

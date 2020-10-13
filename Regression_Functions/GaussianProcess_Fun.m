@@ -1,4 +1,4 @@
-function [TestResult,TrainResult,ExtTestResult]= GaussianProcess_Fun(x,y,X_ext,Y_ext,No_of_folds)
+function [TestResult,TrainResult,ExtTestResult]= GaussianProcess_Fun(x,y,X_ext,Y_ext,No_of_folds,Max_output)
 
 data_arash=[x y];
 
@@ -26,22 +26,30 @@ for K =1 : No_of_folds
     mdl = fitrgp(Xtrn,Ytrn);
     yhtrn = predict(mdl,Xtrn);
     
-    mse_train = mse(Ytrn,yhtrn);
-    rmse_train = sqrt(mse(Ytrn,yhtrn));
-    mae_train = mae(Ytrn,yhtrn);
-   
+    Ytrn_real = Ytrn*Max_output;
+    yhtrn_real = yhtrn*Max_output;
+    
+    mse_train = mse(Ytrn_real,yhtrn_real);
+    rmse_train = sqrt(Ytrn_real,yhtrn_real);
+    mae_train = mae(Ytrn_real,yhtrn_real);
+    
     % test step
     Yh1 = predict(mdl,Xtst);
     Yh1_ext = predict(mdl,X_ext);
+        
+    Ytst_real = Ytst*Max_output;
+    Yh1_real = Yh1*Max_output;
     
+    Yext_real = Y_ext*Max_output;
+    Yh1_ext_real = Yh1_ext*Max_output;
     
-    mse_test = mse(Ytst,Yh1);
-    rmse_test = sqrt(mse(Ytst,Yh1));
-    mae_test = mae(Ytst,Yh1);
+    mse_test = mse(Ytst_real,Yh1_real);
+    rmse_test = sqrt(mse(Ytst_real,Yh1_real));
+    mae_test = mae(Ytst_real,Yh1_real);
     
-    mse_ext_test = mse(Y_ext,Yh1_ext);
-    rmse_ext_test = sqrt(mse(Y_ext,Yh1_ext));
-    mae_ext_test = mae(Y_ext,Yh1_ext);
+    mse_ext_test = mse(Yext_real,Yh1_ext_real);
+    rmse_ext_test = sqrt(mse(Yext_real,Yh1_ext_real));
+    mae_ext_test = mae(Yext_real,Yh1_ext_real);
     %%%%%%%%TRAIN Measurments
     MSEtrain(K,1) = mse_train;
     RMSEtrain(K,1) = rmse_train;
@@ -50,18 +58,16 @@ for K =1 : No_of_folds
     MSEtest(K,1) = mse_test;
     RMSEtest(K,1) = rmse_test;
     MAEtest(K,1) = mae_test;
-    
-    
     %%%%%%%%External TEST Measurments
     MSEexttest(K,1) = mse_ext_test;
     RMSEexttest(K,1) = rmse_ext_test;
     MAEexttest(K,1) = mae_ext_test;
 end%%%For for Kfold
-%
+
 TrainResult.MSE= MSEtrain;
 TrainResult.RMSE= RMSEtrain;
 TrainResult.MAE= MAEtrain;
-%
+
 TestResult.MSE= MSEtest;
 TestResult.RMSE= RMSEtest;
 TestResult.MAE= MAEtest;
@@ -69,6 +75,5 @@ TestResult.MAE= MAEtest;
 ExtTestResult.MSE= MSEexttest;
 ExtTestResult.RMSE= RMSEexttest;
 ExtTestResult.MAE= MAEexttest;
-
 
 end %function
