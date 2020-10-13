@@ -10,7 +10,7 @@ nn=10;
 
 %%%%Only Prediction algorithms in each trajectory
 
-data_loc = 'C:\Users\ajavanmardi\Desktop\ArashAI_Project_new\Arash_data_onlyPD.xlsx';
+data_loc = 'C:\Users\Njava\Documents\Arash\ArashAI_Project-master\Arash_data_onlyPD1.xlsx';
 [~,sheets] = xlsfinfo(data_loc);
 
 
@@ -38,23 +38,23 @@ for i = 1:length(data)
             models(l) = {model};
             final_X_ext=X_ext(:,model(:,1));
             for j = 1:n
-                % try
+                try
                 [i k l j]
                 [TestResult,TrainResult,ExtTestResult]= regression_algos(final_x,Y,final_X_ext,Y_ext,No_of_folds,j,nn,Max_output);
-                TOTAL_Test_MAE(k,j,:) = TestResult.MAE;
-                TOTAL_Test_MSE(k,j,:) = TestResult.MSE;
-                TOTAL_Test_RMSE(k,j,:) = TestResult.RMSE;
+                TOTAL_Test_MAE(l,j,:) = TestResult.MAE;
+                TOTAL_Test_MSE(l,j,:) = TestResult.MSE;
+                TOTAL_Test_RMSE(l,j,:) = TestResult.RMSE;
                 
-                TOTAL_Train_MAE(k,j,:) = TrainResult.MAE;
-                TOTAL_Train_MSE(k,j,:) = TrainResult.MSE;
-                TOTAL_Train_RMSE(k,j,:) = TrainResult.RMSE;
+                TOTAL_Train_MAE(l,j,:) = TrainResult.MAE;
+                TOTAL_Train_MSE(l,j,:) = TrainResult.MSE;
+                TOTAL_Train_RMSE(l,j,:) = TrainResult.RMSE;
                 
-                TOTAL_Ext_Test_MAE(k,j,:) = ExtTestResult.MAE;
-                TOTAL_Ext_Test_MSE(k,j,:) = ExtTestResult.MSE;
-                TOTAL_Ext_Test_RMSE(k,j,:) = ExtTestResult.RMSE;
+                TOTAL_Ext_Test_MAE(l,j,:) = ExtTestResult.MAE;
+                TOTAL_Ext_Test_MSE(l,j,:) = ExtTestResult.MSE;
+                TOTAL_Ext_Test_RMSE(l,j,:) = ExtTestResult.RMSE;
                 
-                %catch
-                %end
+                catch
+                end
             end
             TOTAL_TestResult.('MAE') = TOTAL_Test_MAE;
             TOTAL_TestResult.('MSE') = TOTAL_Test_MSE;
@@ -68,8 +68,10 @@ for i = 1:length(data)
             TOTAL_Ext_TestResult.('MSE') = TOTAL_Ext_Test_MSE;
             TOTAL_Ext_TestResult.('RMSE') = TOTAL_Ext_Test_RMSE;
         end
-        dirname = [strcat('Oct12_Result_with_Feat_Sel_',string(l))];
-        mkdir(dirname);
+        dirname = [strcat('Oct12_Result_with_Feat_Sel_CV_',string(k))];
+        if ~exist(dirname, 'dir')
+            mkdir(dirname);
+        end
         ffname1 = strcat(dirname,'/TOTAL_TrainResult_Dataset', string(i), '.mat');
         ffname2 = strcat(dirname,'/TOTAL_TestResult_Dataset', string(i),'.mat');
         ffname3 = strcat(dirname,'/TOTAL_Ext_TestResult_Dataset', string(i), '.mat');
@@ -78,4 +80,3 @@ for i = 1:length(data)
         save(ffname3,'TOTAL_Ext_TestResult');
     end
 end
-

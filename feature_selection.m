@@ -1,5 +1,5 @@
 function [model, final_x]= feature_selection(X,Y,i)
-addpath('C:\Users\ajavanmardi\Desktop\ArashAI_Project_new\FeatureSelection_functions')
+addpath('C:\Users\Njava\Documents\Arash\ArashAI_Project-master\FeatureSelection_functions')
 
 switch i
     

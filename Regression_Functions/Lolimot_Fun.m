@@ -1,5 +1,5 @@
 function [TestResult,TrainResult,ExtTestResult]=Lolimot_Fun(X,Y,X_ext,Y_ext,No_of_folds,nn,Max_output)
-addpath('C:\Users\ajavanmardi\Desktop\ArashAI_Project_new\Classification_task')
+addpath('C:\Users\Njava\Documents\Arash\ArashAI_Project-master\Classification_task')
 %addpath('C:\Users\Arash\Downloads\ArashAI_Project_oct8\Classification_task')
 No_of_class=max(Y);
 InputNum=size(X,2);
@@ -62,7 +62,7 @@ for K =1 : No_of_folds
     
     %%%%%%%%TEST Measurments  MSE, SMSE, MAE, r-squared, adjusted r-squared
     mse_train = mse(Ytrn_real,yhtrn_real);
-    rmse_train = sqrt(Ytrn_real,yhtrn_real);
+    rmse_train = sqrt(mse(Ytrn_real,yhtrn_real));
     mae_train = mae(Ytrn_real,yhtrn_real);
 
     mse_test = mse(Ytst_real,Yh1_real);

@@ -30,7 +30,7 @@ for K =1 : No_of_folds
     yhtrn_real = yhtrn*Max_output;
     
     mse_train = mse(Ytrn_real,yhtrn_real);
-    rmse_train = sqrt(Ytrn_real,yhtrn_real);
+    rmse_train = sqrt(mse(Ytrn_real,yhtrn_real));
     mae_train = mae(Ytrn_real,yhtrn_real);
     
     % test step

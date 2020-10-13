@@ -1,5 +1,5 @@
 function [TestResult,TrainResult,ExtTestResult]= regression_algos(X,Y,X_ext,Y_ext,No_of_folds,i,nn,Max_output)
-addpath('C:\Users\Arash\Downloads\ArashAI_Project_oct8\Regression_functions')
+addpath('C:\Users\Njava\Documents\Arash\ArashAI_Project-master\Regression_Functions')
 
 switch i
     case 1

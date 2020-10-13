@@ -10,7 +10,7 @@ nn=10;
 
 %%%%Only Prediction algorithms in each trajectory
 
-data_loc = 'C:\Users\Arash\Downloads\ArashAI_Project_oct8\Arash_data_onlyPD1.xlsx';
+data_loc = 'C:\Users\Njava\Documents\Arash\ArashAI_Project-master\Arash_data_onlyPD1.xlsx';
 
 [~,sheets] = xlsfinfo(data_loc);
 
@@ -34,9 +34,9 @@ for i = 1:length(data)
         test_datatest=cell2mat(test_data(k));
         X_ext= test_datatest(:,3:end-1);
         Y_ext=test_datatest(:,end);
-        for j = 1:n
+        for j = [1 2 3 4 6 7]
             [i k j]
-            [TestResult,TrainResult,ExtTestResult]= regression_algos(X,Y,X_ext,Y_ext,No_of_folds,j,nn,Max_output);
+            [TestResult, TrainResult, ExtTestResult] = regression_algos(X,Y,X_ext,Y_ext,No_of_folds,j,nn,Max_output);
             TOTAL_Test_MAE(k,j,:) = TestResult.MAE;
             TOTAL_Test_MSE(k,j,:) = TestResult.MSE;
             TOTAL_Test_RMSE(k,j,:) = TestResult.RMSE;
@@ -71,9 +71,9 @@ for i = 1:length(data)
     ffname1 = strcat(dirname,'/TOTAL_TrainResult_Dataset', string(i), '.mat');
     ffname2 = strcat(dirname,'/TOTAL_TestResult_Dataset', string(i),'.mat');
     ffname3 = strcat(dirname,'/TOTAL_Ext_TestResult_Dataset', string(i), '.mat');
-    save(ffname1,strcat('TOTAL_TrainResult_CV', string(i)));
-    save(ffname2,strcat('TOTAL_TestResult_CV',string(i)));
-    save(ffname3,strcat('TOTAL_Ext_TestResult_CV',string(i)));
+    save(ffname1,'TOTAL_TrainResult');
+    save(ffname2,'TOTAL_TestResult');
+    save(ffname3,'TOTAL_Ext_TestResult');
 end
 
 

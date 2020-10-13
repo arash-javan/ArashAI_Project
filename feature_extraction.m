@@ -1,6 +1,6 @@
 function [final_x] = feature_extraction(X,k,num_feats,i)
-addpath('C:\Users\Arash\Downloads\ArashAI_Project_oct8\FSLib_v7.0.1_2020_2\lib\drtoolbox\techniques')
-addpath('C:\Users\Arash\Downloads\ArashAI_Project_oct8\FSLib_v7.0.1_2020_2\lib\drtoolbox')
+addpath('C:\Users\Njava\Documents\Arash\ArashAI_Project-master\FSLib_v7.0.1_2020_2\lib\drtoolbox\techniques')
+addpath('C:\Users\Njava\Documents\Arash\ArashAI_Project-master\FSLib_v7.0.1_2020_2\lib\drtoolbox')
 switch i
     case 1
         final_x = pca(X,num_feats);

@@ -78,7 +78,7 @@ for K =1 : No_of_folds
     Yh1_ext_real = Yh1_ext*Max_output;
     %%%%%%%%TEST Measurments  MSE, SMSE, MAE, r-squared, adjusted r-squared
     mse_train = mse(Ytrn_real,yhtrn_real);
-    rmse_train = sqrt(Ytrn_real,yhtrn_real);
+    rmse_train = sqrt(mse(Ytrn_real,yhtrn_real));
     mae_train = mae(Ytrn_real,yhtrn_real);
 
     mse_test = mse(Ytst_real,Yh1_real);
