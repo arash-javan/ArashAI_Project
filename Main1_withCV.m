@@ -36,7 +36,7 @@ for i = 1:length(data)
         Y_ext=test_datatest(:,end);
         for j = 1:n
             [i k j]
-            [TestResult,TrainResult,ExtTestResult]= regression_algos(X,Y,X_ext,Y_ext,No_of_folds,i,nn,Max_output);
+            [TestResult,TrainResult,ExtTestResult]= regression_algos(X,Y,X_ext,Y_ext,No_of_folds,j,nn,Max_output);
             TOTAL_Test_MAE(k,j,:) = TestResult.MAE;
             TOTAL_Test_MSE(k,j,:) = TestResult.MSE;
             TOTAL_Test_RMSE(k,j,:) = TestResult.RMSE;
